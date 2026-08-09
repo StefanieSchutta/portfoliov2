@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Hero-Crop-Tool · Echoes of Adventures</title>
+<style>
+  :root {
+    --bg: #0d0d0d; --fg: #f2f2f2; --muted: #a3a3a3;
+    --line: #333; --accent: #f2f2f2;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg); color: var(--fg);
+    font: 15px/1.5 'DM Sans', system-ui, -apple-system, sans-serif;
+    padding: 32px 24px 96px;
+  }
+  header { max-width: 760px; margin: 0 auto 40px; }
+  h1 { font-size: 22px; font-weight: 500; letter-spacing: -0.01em; }
+  .lede { color: var(--muted); margin-top: 10px; font-size: 14px; }
+  .lede code { background: #1c1c1c; padding: 1px 5px; border-radius: 2px; }
+
+  .picker {
+    display: inline-flex; align-items: center; gap: 10px;
+    margin-top: 20px; padding: 12px 20px; min-height: 44px;
+    border: 1px solid var(--line); border-radius: 2px;
+    background: #1a1a1a; cursor: pointer; font-size: 14px;
+  }
+  .picker:hover { border-color: var(--muted); }
+  .picker input { position: absolute; width: 1px; height: 1px; opacity: 0; }
+
+  .grid { max-width: 760px; margin: 0 auto; display: grid; gap: 48px; }
+
+  .card { border-top: 1px solid var(--line); padding-top: 24px; }
+  .card h2 { font-size: 13px; font-weight: 600; letter-spacing: 0.08em;
+             text-transform: uppercase; }
+  .slug { color: var(--muted); font-size: 12px; margin-top: 4px;
+          font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+
+  .stage {
+    position: relative; margin-top: 16px; line-height: 0;
+    background: #000; touch-action: none; user-select: none;
+  }
+  .stage img { width: 100%; height: auto; display: block; opacity: 0.42; }
+
+  .frame {
+    position: absolute; cursor: grab;
+    outline: 2px solid var(--accent);
+    box-shadow: 0 0 0 9999px rgba(0,0,0,0.55);
+  }
+  .frame:active { cursor: grabbing; }
+  .frame::after {
+    content: ''; position: absolute; inset: 0;
+    background-image:
+      linear-gradient(to right, rgba(255,255,255,0.25) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(255,255,255,0.25) 1px, transparent 1px);
+    background-size: 33.333% 33.333%;
+    pointer-events: none;
+  }
+  .frame:focus-visible { outline: 3px solid #7fd4ff; }
+
+  .clip {
+    position: absolute; inset: 0; overflow: hidden; pointer-events: none;
+  }
+  .clip img { position: absolute; opacity: 1; max-width: none; }
+
+  .controls { display: flex; align-items: center; gap: 14px; margin-top: 14px;
+              flex-wrap: wrap; }
+  label.zoom { font-size: 12px; color: var(--muted); letter-spacing: 0.06em;
+               text-transform: uppercase; }
+  input[type=range] { width: 220px; accent-color: #fff; height: 44px; }
+  .hint { font-size: 12px; color: var(--muted); }
+
+  .output { max-width: 760px; margin: 56px auto 0; }
+  textarea {
+    width: 100%; min-height: 180px; margin-top: 12px; padding: 14px;
+    background: #141414; color: var(--fg); border: 1px solid var(--line);
+    border-radius: 2px; font: 13px/1.6 ui-monospace, SFMono-Regular, Menlo, monospace;
+    resize: vertical;
+  }
+  .actions { display: flex; gap: 12px; margin-top: 14px; flex-wrap: wrap; }
+  button {
+    min-height: 44px; padding: 0 20px; font: inherit; font-size: 14px;
+    background: var(--fg); color: #000; border: none; border-radius: 2px;
+    cursor: pointer;
+  }
+  button.ghost { background: transparent; color: var(--fg); border: 1px solid var(--line); }
+  button:hover { opacity: 0.85; }
+  :focus-visible { outline: 2px solid #7fd4ff; outline-offset: 2px; }
+  .status { margin-top: 10px; font-size: 13px; color: var(--muted); min-height: 1.5em; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Hero-Crop-Tool</h1>
+  <p class="lede">
+    Legt pro Hero-Bild den 4:5-Ausschnitt fest, der mobil ausgespielt wird.
+    Rahmen ziehen, Größe über den Regler. Ergebnis als
+    <code>tools/hero-crops.json</code> speichern, dann
+    <code>generate_images.py</code> laufen lassen.
+    Läuft komplett lokal — es wird nichts hochgeladen.
+  </p>
+  <label class="picker">
+    Hero-Originale auswählen
+    <input type="file" id="files" accept="image/*" multiple />
+  </label>
+  <p class="status" id="status" role="status"></p>
+</header>
+
+<main class="grid" id="grid"></main>
+
+<section class="output" hidden id="outbox">
+  <h2 style="font-size:13px;letter-spacing:.08em;text-transform:uppercase">hero-crops.json</h2>
+  <textarea id="out" readonly aria-label="Generiertes JSON"></textarea>
+  <div class="actions">
+    <button id="copy" type="button">In Zwischenablage kopieren</button>
+    <button id="download" class="ghost" type="button">Als Datei speichern</button>
+  </div>
+</section>
+
+<script>
+const RATIO = 4 / 5;                 // Breite / Höhe
+const state = new Map();             // slug -> {name, W, H, x, y, w, h}
+
+// Muss identisch zu slugify() in generate_images.py sein
+function slugify(name) {
+  return name.normalize('NFKD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/ß/g, 'ss')
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/-{2,}/g, '-')
+    .replace(/^-|-$/g, '');
+}
+
+document.getElementById('files').addEventListener('change', e => {
+  const files = [...e.target.files];
+  document.getElementById('grid').innerHTML = '';
+  state.clear();
+  files.forEach(addCard);
+  document.getElementById('status').textContent =
+    files.length + ' Bild(er) geladen. Nicht-Hero-Bilder brauchen keinen Zuschnitt.';
+  document.getElementById('outbox').hidden = files.length === 0;
+});
+
+function addCard(file) {
+  const slug = slugify(file.name.replace(/\.[^.]+$/, ''));
+  const url = URL.createObjectURL(file);
+
+  const card = document.createElement('section');
+  card.className = 'card';
+  card.innerHTML = `
+    <h2>${file.name}</h2>
+    <p class="slug">${slug}</p>
+    <div class="stage">
+      <img alt="" class="base">
+      <div class="frame" tabindex="0" role="application"
+           aria-label="Ausschnitt für ${slug}. Pfeiltasten verschieben, Plus und Minus ändern die Größe.">
+        <div class="clip"><img alt=""></div>
+      </div>
+    </div>
+    <div class="controls">
+      <label class="zoom" for="z-${slug}">Größe</label>
+      <input type="range" id="z-${slug}" min="20" max="100" value="100" />
+      <span class="hint">Ziehen · Pfeiltasten · +/−</span>
+    </div>`;
+  document.getElementById('grid').appendChild(card);
+
+  const base = card.querySelector('img.base');
+  const frame = card.querySelector('.frame');
+  const inner = card.querySelector('.clip img');
+  const range = card.querySelector('input[type=range]');
+
+  base.onload = () => {
+    const W = base.naturalWidth, H = base.naturalHeight;
+    // Größtmöglicher zentrierter 4:5-Rahmen in Pixeln
+    let w, h;
+    if (W / H > RATIO) { h = H; w = Math.round(h * RATIO); }
+    else               { w = W; h = Math.round(w / RATIO); }
+    state.set(slug, { name: file.name, W, H, maxW: w,
+                      x: Math.round((W - w) / 2), y: Math.round((H - h) / 2), w, h });
+    draw();
+  };
+  base.src = url;
+  inner.src = url;
+
+  function draw() {
+    const s = state.get(slug);
+    if (!s) return;
+    frame.style.left   = (s.x / s.W * 100) + '%';
+    frame.style.top    = (s.y / s.H * 100) + '%';
+    frame.style.width  = (s.w / s.W * 100) + '%';
+    frame.style.height = (s.h / s.H * 100) + '%';
+    // Bild im Rahmen deckungsgleich zum Hintergrund positionieren
+    inner.style.width = (s.W / s.w * 100) + '%';
+    inner.style.left  = (-s.x / s.w * 100) + '%';
+    inner.style.top   = (-s.y / s.h * 100) + '%';
+    emit();
+  }
+
+  function move(dx, dy) {
+    const s = state.get(slug); if (!s) return;
+    s.x = Math.max(0, Math.min(s.W - s.w, s.x + dx));
+    s.y = Math.max(0, Math.min(s.H - s.h, s.y + dy));
+    draw();
+  }
+
+  function resize(pct) {
+    const s = state.get(slug); if (!s) return;
+    const cx = s.x + s.w / 2, cy = s.y + s.h / 2;
+    s.w = Math.round(s.maxW * pct / 100);
+    s.h = Math.round(s.w / RATIO);
+    s.x = Math.max(0, Math.min(s.W - s.w, Math.round(cx - s.w / 2)));
+    s.y = Math.max(0, Math.min(s.H - s.h, Math.round(cy - s.h / 2)));
+    draw();
+  }
+
+  range.addEventListener('input', () => resize(+range.value));
+
+  let drag = null;
+  frame.addEventListener('pointerdown', e => {
+    const s = state.get(slug); if (!s) return;
+    frame.setPointerCapture(e.pointerId);
+    drag = { px: e.clientX, py: e.clientY, x: s.x, y: s.y,
+             scale: s.W / base.clientWidth };
+  });
+  frame.addEventListener('pointermove', e => {
+    if (!drag) return;
+    const s = state.get(slug);
+    s.x = Math.max(0, Math.min(s.W - s.w, Math.round(drag.x + (e.clientX - drag.px) * drag.scale)));
+    s.y = Math.max(0, Math.min(s.H - s.h, Math.round(drag.y + (e.clientY - drag.py) * drag.scale)));
+    draw();
+  });
+  frame.addEventListener('pointerup', () => { drag = null; });
+  frame.addEventListener('pointercancel', () => { drag = null; });
+
+  frame.addEventListener('keydown', e => {
+    const s = state.get(slug); if (!s) return;
+    const step = e.shiftKey ? Math.round(s.W / 20) : Math.round(s.W / 200) || 1;
+    const keys = { ArrowLeft: [-step, 0], ArrowRight: [step, 0],
+                   ArrowUp: [0, -step], ArrowDown: [0, step] };
+    if (keys[e.key]) { e.preventDefault(); move(...keys[e.key]); }
+    if (e.key === '+' || e.key === '=') {
+      e.preventDefault(); range.value = Math.min(100, +range.value + 5); resize(+range.value);
+    }
+    if (e.key === '-') {
+      e.preventDefault(); range.value = Math.max(20, +range.value - 5); resize(+range.value);
+    }
+  });
+}
+
+function emit() {
+  const obj = {};
+  [...state.entries()].sort().forEach(([slug, s]) => {
+    obj[slug] = {
+      x: +(s.x / s.W).toFixed(5),
+      y: +(s.y / s.H).toFixed(5),
+      w: +(s.w / s.W).toFixed(5),
+      h: +(s.h / s.H).toFixed(5),
+    };
+  });
+  document.getElementById('out').value = JSON.stringify(obj, null, 2);
+}
+
+document.getElementById('copy').addEventListener('click', async () => {
+  await navigator.clipboard.writeText(document.getElementById('out').value);
+  document.getElementById('status').textContent = 'JSON kopiert.';
+});
+
+document.getElementById('download').addEventListener('click', () => {
+  const blob = new Blob([document.getElementById('out').value], { type: 'application/json' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'hero-crops.json';
+  a.click();
+  URL.revokeObjectURL(a.href);
+});
+</script>
+</body>
+</html>

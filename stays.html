@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Photography for family-run hotels, surf hostels and Airbnbs — simple packages, honest prices, or trade a stay for photos." />
+  <title>Independent Stays · Echoes by Stefanie Schutta</title>
+  <link rel="preload" href="dm-sans-latin-normal.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="stylesheet" href="style.css" />
+  <link rel="icon" type="image/svg+xml" href="images/favicon.svg" />
+  <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="images/favicon-180.png" />
+</head>
+<body>
+
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <!-- NAV -->
+  <header>
+    <nav class="nav is-scrolled" role="navigation" aria-label="Main navigation">
+      <a href="index.html" class="nav-logo" aria-label="Echoes by Stefanie Schutta — home">
+        Echoes by Stefanie Schutta
+      </a>
+
+      <ul class="nav-links" role="list">
+        <li><a href="index.html#gallery"     data-en="Work"        data-de="Arbeit">Work</a></li>
+        <li><a href="index.html#about"       data-en="About"       data-de="Über mich">About</a></li>
+        <li><a href="index.html#collaborate" data-en="Collaborate" data-de="Kollaboration">Collaborate</a></li>
+        <li><a href="index.html#contact"     data-en="Contact"     data-de="Kontakt">Contact</a></li>
+      </ul>
+
+      <div class="nav-right">
+        <a
+          href="index.html#contact"
+          class="nav-cta"
+          data-en="Get in touch"
+          data-de="Anfragen"
+        >Get in touch</a>
+
+        <button
+          id="lang-toggle"
+          class="btn-lang"
+          aria-label="Switch language"
+          type="button"
+        >DE</button>
+
+        <button
+          id="hamburger"
+          class="btn-hamburger"
+          aria-label="Open menu"
+          aria-expanded="false"
+          aria-controls="mobile-nav"
+          type="button"
+        >
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Mobile nav overlay -->
+  <div
+    id="mobile-nav"
+    class="mobile-nav"
+    role="dialog"
+    aria-label="Navigation menu"
+    aria-modal="true"
+  >
+    <button id="mobile-nav-close" class="mobile-nav-close" aria-label="Close menu" type="button">
+      &#x2715;
+    </button>
+
+    <a href="index.html#gallery"     class="mobile-nav-link" data-en="Work"        data-de="Arbeit">Work</a>
+    <a href="index.html#about"       class="mobile-nav-link" data-en="About"       data-de="Über mich">About</a>
+    <a href="index.html#collaborate" class="mobile-nav-link" data-en="Collaborate" data-de="Kollaboration">Collaborate</a>
+    <a href="index.html#contact"     class="mobile-nav-link" data-en="Contact"     data-de="Kontakt">Contact</a>
+
+    <button id="mobile-lang" class="mobile-lang-toggle btn-lang" onclick="toggleLanguage()" type="button">DE</button>
+  </div>
+
+  <!-- MAIN -->
+  <main id="main">
+
+    <!-- Header -->
+    <section class="stays-header" aria-labelledby="stays-heading">
+      <div class="container">
+        <span
+          class="section-eyebrow"
+          data-en="Independent Stays"
+          data-de="Independent Stays"
+        >Independent Stays</span>
+
+        <h1
+          id="stays-heading"
+          class="stays-title"
+          data-en="Photos for places with soul."
+          data-de="Fotos für Orte mit Seele."
+        >Photos for places with soul.</h1>
+
+        <p
+          class="stays-intro"
+          data-en="I photograph places I'd love to stay in myself: Airbnbs with character, surf hostels, family-run hotels. No sterile real-estate shots — photos that show what it feels like to stay with you. No deposit, no hidden costs, no fine print."
+          data-de="Ich fotografiere Unterkünfte, in denen ich selbst gerne wohnen würde: Airbnbs mit Charakter, Surf Hostels, familiengeführte Hotels. Keine sterilen Immobilienfotos — Bilder, die zeigen, wie es sich anfühlt, bei dir zu sein. Keine Anzahlung, keine versteckten Kosten, kein Kleingedrucktes."
+        >I photograph places I'd love to stay in myself: Airbnbs with character, surf hostels, family-run hotels. No sterile real-estate shots — photos that show what it feels like to stay with you. No deposit, no hidden costs, no fine print.</p>
+      </div>
+    </section>
+
+    <!-- How it works -->
+    <section class="section" aria-labelledby="stays-how-heading">
+      <div class="container">
+        <h2
+          id="stays-how-heading"
+          class="section-eyebrow"
+          data-en="How it works"
+          data-de="So einfach läuft's"
+        >How it works</h2>
+
+        <div class="stays-steps">
+          <div class="stays-step">
+            <span class="stays-step-num" aria-hidden="true">01</span>
+            <p
+              data-en="Send me a short message about your place and what you need."
+              data-de="Du schreibst mir kurz, was du hast und was du brauchst."
+            >Send me a short message about your place and what you need.</p>
+          </div>
+          <div class="stays-step">
+            <span class="stays-step-num" aria-hidden="true">02</span>
+            <p
+              data-en="We find a date."
+              data-de="Wir finden einen Termin."
+            >We find a date.</p>
+          </div>
+          <div class="stays-step">
+            <span class="stays-step-num" aria-hidden="true">03</span>
+            <p
+              data-en="I come by and shoot while you carry on as usual."
+              data-de="Ich komme vorbei und fotografiere — du machst einfach weiter wie immer."
+            >I come by and shoot while you carry on as usual.</p>
+          </div>
+          <div class="stays-step">
+            <span class="stays-step-num" aria-hidden="true">04</span>
+            <p
+              data-en="Within 5 business days, you get a link with all final photos. You pay after delivery."
+              data-de="Nach 5 Werktagen bekommst du einen Link mit allen fertigen Fotos. Du zahlst nach Lieferung."
+            >Within 5 business days, you get a link with all final photos. You pay after delivery.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Packages -->
+    <section class="section" aria-labelledby="stays-packages-heading" style="padding-top: 0;">
+      <div class="container">
+        <h2
+          id="stays-packages-heading"
+          class="section-eyebrow"
+          data-en="Packages"
+          data-de="Pakete"
+        >Packages</h2>
+
+        <div class="stays-packages">
+
+          <article class="stays-package">
+            <div>
+              <h3
+                class="stays-package-name"
+                data-en="Vacation Rental &amp; Airbnb"
+                data-de="Ferienwohnung &amp; Airbnb"
+              >Vacation Rental &amp; Airbnb</h3>
+              <p
+                class="stays-package-for"
+                data-en="For single apartments, studios and tiny houses."
+                data-de="Für einzelne Wohnungen, Studios und Tiny Houses."
+              >For single apartments, studios and tiny houses.</p>
+            </div>
+            <ul class="stays-package-list">
+              <li data-en="Up to 2 hours on site" data-de="Bis zu 2 Stunden vor Ort">Up to 2 hours on site</li>
+              <li data-en="15 fully edited photos" data-de="15 fertig bearbeitete Fotos">15 fully edited photos</li>
+              <li data-en="Every room + the details that make your place special" data-de="Alle Räume + die Details, die deine Unterkunft besonders machen">Every room + the details that make your place special</li>
+              <li data-en="Sized and ready for Airbnb, Booking &amp; your own channels" data-de="Perfekt zugeschnitten für Airbnb, Booking &amp; deine eigenen Kanäle">Sized and ready for Airbnb, Booking &amp; your own channels</li>
+              <li data-en="All photos are yours — use them wherever, for as long as you like" data-de="Alle Fotos gehören dir — nutze sie, wo und solange du willst">All photos are yours — use them wherever, for as long as you like</li>
+            </ul>
+            <p class="stays-price">€290
+              <small data-en="flat" data-de="Festpreis">flat</small>
+            </p>
+          </article>
+
+          <article class="stays-package">
+            <div>
+              <h3
+                class="stays-package-name"
+                data-en="Surf Hostel &amp; Small Hotel"
+                data-de="Surf Hostel &amp; kleines Hotel"
+              >Surf Hostel &amp; Small Hotel</h3>
+              <p
+                class="stays-package-for"
+                data-en="For hostels, guesthouses and family-run places. Half a day."
+                data-de="Für Hostels, Guesthouses und familiengeführte Häuser. Ein halber Tag."
+              >For hostels, guesthouses and family-run places. Half a day.</p>
+            </div>
+            <ul class="stays-package-list">
+              <li data-en="Up to 4 hours on site" data-de="Bis zu 4 Stunden vor Ort">Up to 4 hours on site</li>
+              <li data-en="25 fully edited photos" data-de="25 fertig bearbeitete Fotos">25 fully edited photos</li>
+              <li data-en="Rooms, common areas, outdoor spaces — and the atmosphere in between" data-de="Zimmer, Gemeinschaftsbereiche, Außenbereich — und die Atmosphäre dazwischen">Rooms, common areas, outdoor spaces — and the atmosphere in between</li>
+              <li data-en="Plus every photo formatted for Instagram &amp; Stories" data-de="Zusätzlich alle Fotos in Formaten für Instagram &amp; Stories">Plus every photo formatted for Instagram &amp; Stories</li>
+              <li data-en="All photos are yours — use them wherever, for as long as you like" data-de="Alle Fotos gehören dir — nutze sie, wo und solange du willst">All photos are yours — use them wherever, for as long as you like</li>
+            </ul>
+            <p class="stays-price">€490
+              <small data-en="flat" data-de="Festpreis">flat</small>
+            </p>
+          </article>
+
+          <article class="stays-package">
+            <div>
+              <h3
+                class="stays-package-name"
+                data-en="The Full Day"
+                data-de="Der ganze Tag"
+              >The Full Day</h3>
+              <p
+                class="stays-package-for"
+                data-en="When your place has more story to tell."
+                data-de="Wenn dein Haus mehr Geschichte zu erzählen hat."
+              >When your place has more story to tell.</p>
+            </div>
+            <ul class="stays-package-list">
+              <li data-en="A full day on site (up to 8 hours)" data-de="Ein voller Tag vor Ort (bis zu 8 Stunden)">A full day on site (up to 8 hours)</li>
+              <li data-en="40 fully edited photos" data-de="40 fertig bearbeitete Fotos">40 fully edited photos</li>
+              <li data-en="Everything from the half day, plus life at your place — breakfast, sunset on the terrace, the walk to the beach" data-de="Alles aus dem halben Tag, plus: Leben im Haus — Frühstück, Sonnenuntergang auf der Terrasse, der Weg zum Strand">Everything from the half day, plus life at your place — breakfast, sunset on the terrace, the walk to the beach</li>
+              <li data-en="Plus every photo formatted for Instagram &amp; Stories" data-de="Zusätzlich alle Fotos in Formaten für Instagram &amp; Stories">Plus every photo formatted for Instagram &amp; Stories</li>
+              <li data-en="All photos are yours — use them wherever, for as long as you like" data-de="Alle Fotos gehören dir — nutze sie, wo und solange du willst">All photos are yours — use them wherever, for as long as you like</li>
+            </ul>
+            <p class="stays-price">€790
+              <small data-en="flat" data-de="Festpreis">flat</small>
+            </p>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- Stay & Shoot -->
+    <section class="section stays-barter" aria-labelledby="barter-heading">
+      <div class="container">
+        <div class="stays-barter-inner">
+
+          <div>
+            <span
+              class="section-eyebrow"
+              data-en="Stay &amp; Shoot"
+              data-de="Stay &amp; Shoot"
+            >Stay &amp; Shoot</span>
+
+            <h2
+              id="barter-heading"
+              class="stays-barter-title"
+              data-en="No budget, but empty beds? Let's trade."
+              data-de="Kein Budget, aber freie Betten? Lass uns tauschen."
+            >No budget, but empty beds? Let's trade.</h2>
+
+            <p
+              class="stays-barter-lead"
+              data-en="You host me for at least 3 nights, I photograph your place — 10–12 final photos you can use for your marketing. Available only in places my travels take me anyway, so just ask if your region fits right now."
+              data-de="Du stellst mir Unterkunft für mindestens 3 Nächte, ich fotografiere deine Unterkunft — 10–12 fertige Fotos für dein Marketing. Nur an Orten, an die mich meine Reisen ohnehin führen — frag einfach, ob deine Region gerade passt."
+            >You host me for at least 3 nights, I photograph your place — 10–12 final photos you can use for your marketing. Available only in places my travels take me anyway, so just ask if your region fits right now.</p>
+          </div>
+
+          <div>
+            <h3
+              class="section-eyebrow"
+              data-en="Fair for both"
+              data-de="Fair für beide"
+            >Fair for both</h3>
+            <ul class="stays-barter-list">
+              <li
+                data-en="We put the essentials in writing beforehand — short and simple, one page."
+                data-de="Wir halten vorher schriftlich fest, was du bekommst — kurz und unkompliziert, eine Seite."
+              >We put the essentials in writing beforehand — short and simple, one page.</li>
+              <li
+                data-en="I get to use the photos for my portfolio and channels."
+                data-de="Ich darf die Fotos für mein Portfolio und meine Kanäle nutzen."
+              >I get to use the photos for my portfolio and channels.</li>
+              <li
+                data-en="When you publish the photos, you credit me as the photographer."
+                data-de="Wenn du die Fotos veröffentlichst, nennst du mich als Fotografin."
+              >When you publish the photos, you credit me as the photographer.</li>
+            </ul>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ──────────────────────────────────────
+         REFERENZEN — VORBEREITET, NOCH DEAKTIVIERT
+         Aktivieren, sobald reale Bilder vorliegen:
+         1. Bilder als images/stays-ref-1.jpg … stays-ref-3.jpg ablegen
+            (Querformat, ~1200×800px, <300 KB, WebP/JPG)
+         2. Diesen Kommentarblock entfernen (nur die Kommentar-Marker,
+            HTML bleibt stehen)
+         3. alt-Texte + Ortsangaben pro Bild anpassen
+    ─────────────────────────────────────── -->
+    <!--
+    <section class="section stays-refs" aria-labelledby="refs-heading" style="padding-top: 0;">
+      <div class="container">
+        <h2
+          id="refs-heading"
+          class="section-eyebrow"
+          data-en="Recent shoots"
+          data-de="Aktuelle Shootings"
+        >Recent shoots</h2>
+
+        <div class="stays-refs-grid">
+          <figure class="stays-ref">
+            <img src="images/stays-ref-1.jpg" alt="ALT-TEXT: Was ist zu sehen?" loading="lazy" width="1200" height="800" />
+            <figcaption data-en="Hostel name — Berlin" data-de="Hostelname — Berlin">Hostel name — Berlin</figcaption>
+          </figure>
+          <figure class="stays-ref">
+            <img src="images/stays-ref-2.jpg" alt="ALT-TEXT" loading="lazy" width="1200" height="800" />
+            <figcaption data-en="Guesthouse — Sri Lanka" data-de="Guesthouse — Sri Lanka">Guesthouse — Sri Lanka</figcaption>
+          </figure>
+          <figure class="stays-ref">
+            <img src="images/stays-ref-3.jpg" alt="ALT-TEXT" loading="lazy" width="1200" height="800" />
+            <figcaption data-en="Apartment — Berlin" data-de="Apartment — Berlin">Apartment — Berlin</figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+    -->
+
+    <!-- Good to know + CTA -->
+    <section class="section" aria-labelledby="facts-heading">
+      <div class="container">
+        <h2
+          id="facts-heading"
+          class="section-eyebrow"
+          data-en="Good to know"
+          data-de="Gut zu wissen"
+        >Good to know</h2>
+
+        <ul class="stays-facts">
+          <li
+            data-en="All prices are final — no VAT is added (German small business regulation, §19 UStG)."
+            data-de="Alle Preise sind Endpreise — es kommt keine Mehrwertsteuer dazu (Kleinunternehmerregelung §19 UStG)."
+          >All prices are final — no VAT is added (German small business regulation, §19 UStG).</li>
+          <li
+            data-en="Travel within Berlin &amp; surroundings included. Further away? Tell me where and I'll make you a fair offer."
+            data-de="Anfahrt in Berlin &amp; Umgebung inklusive. Weiter weg? Sag mir wo, ich mach dir ein faires Angebot."
+          >Travel within Berlin &amp; surroundings included. Further away? Tell me where and I'll make you a fair offer.</li>
+          <li
+            data-en="Need the photos faster than 5 business days? Mention it — usually something's possible."
+            data-de="Du brauchst die Fotos schneller als in 5 Werktagen? Schreib's dazu, meistens geht was."
+          >Need the photos faster than 5 business days? Mention it — usually something's possible.</li>
+        </ul>
+
+        <a
+          href="index.html#contact"
+          class="stays-cta"
+          data-en="Tell me about your place →"
+          data-de="Erzähl mir von deiner Unterkunft →"
+        >Tell me about your place →</a>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="site-footer" role="contentinfo">
+    <span
+      data-en="© Stefanie Schutta / Echoes of Adventures"
+      data-de="© Stefanie Schutta / Echoes of Adventures"
+    >© Stefanie Schutta / Echoes of Adventures</span>
+
+    <div class="footer-links">
+      <a
+        href="https://www.etsy.com/shop/EchoesOfAdventures"
+        target="_blank"
+        rel="noopener noreferrer"
+        data-en="Etsy Shop"
+        data-de="Etsy Shop"
+      >Etsy Shop</a>
+
+      <a href="mailto:stefanieschutta@gmail.com"
+         data-en="Email" data-de="E-Mail">Email</a>
+
+      <a href="impressum.html" data-en="Impressum" data-de="Impressum">Impressum</a>
+      <a href="datenschutz.html" data-en="Privacy" data-de="Datenschutz">Privacy</a>
+
+      <button
+        onclick="toggleLanguage()"
+        class="btn-lang"
+        type="button"
+        aria-label="Toggle language"
+        data-en="DE"
+        data-de="EN"
+      >DE</button>
+
+      <button
+        id="back-to-top"
+        class="btn-back-top"
+        type="button"
+        aria-label="Back to top"
+        data-en="↑ Top"
+        data-de="↑ Oben"
+      >↑ Top</button>
+    </div>
+  </footer>
+
+  <script src="images/images-manifest.js"></script>
+  <script src="main.js"></script>
+</body>
+</html>
